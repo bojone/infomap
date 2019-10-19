@@ -10,4 +10,4 @@
 
 参考词向量：链接:https://pan.baidu.com/s/1YYE2T3f-lPyLBrJuUowAsA 密码:5p0h
 
-
+最新版本infomap仅支持Python3

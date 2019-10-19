@@ -5,6 +5,9 @@
 - https://www.mapequation.org
 - https://kexue.fm/archives/7006
 
+## 交流
+QQ交流群：67729435，微信群请加机器人微信号spaces_ac_cn
+
 ## 使用
 通过下述代码安装infomap，然后执行`python word_cluster.py`即可。
 ```

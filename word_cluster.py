@@ -3,7 +3,7 @@
 
 from gensim.models import Word2Vec
 from tqdm import tqdm
-import infomap
+from infomap import infomap
 
 
 word2vec = Word2Vec.load('word2vec_baike')
@@ -12,7 +12,7 @@ min_sim = 0.6
 links = {}
 wordset = set(word2vec.wv.index2word[:10000]) # 只保留前10000个词
 
-# 每个词找与它相似度不小于0.6的词（不超过50个），来作为图上的边
+# 每个词找与它相似度不小于0.5的词（不超过40个），来作为图上的边
 for u in tqdm(wordset):
     for v, sim in word2vec.most_similar(u, topn=50):
         if v in wordset:
@@ -48,22 +48,25 @@ for (i, j), sim in tqdm(links.items()):
     _ = infomapWrapper.addLink(word2id(i), word2id(j), sim)
 
 infomapWrapper.run()
+tree = infomapWrapper.tree
 
 
 word2class = {}
 class2word = {}
-for node in infomapWrapper.iterTree():
-    if node.isLeaf():
-        if id2word(node.physicalId) not in word2class:
-            word2class[id2word(node.physicalId)] = []
-        word2class[id2word(node.physicalId)].append(node.moduleIndex())
-        if node.moduleIndex() not in class2word:
-            class2word[node.moduleIndex()] = []
-        class2word[node.moduleIndex()].append(id2word(node.physicalId))
+for node in tree.leafIter():
+    if id2word(node.physIndex) not in word2class:
+        word2class[id2word(node.physIndex)] = []
+    word2class[id2word(node.physIndex)].append(node.moduleIndex())
+    if node.moduleIndex() not in class2word:
+        class2word[node.moduleIndex()] = []
+    class2word[node.moduleIndex()].append(id2word(node.physIndex))
 
 
 # len([(k, v) for k, v in word2class.items() if len(v) > 1])
 
+
+import uniout
+
 for i in range(100):
-    print(class2word[i])
-    print()
+    print class2word[i]
+    print
